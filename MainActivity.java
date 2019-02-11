@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Intent intentLlamada;
     private TextView delegacion, lblMensaje;
     private Button bt1;
+    private String dato,pass;
     double x, y;
 
     @Override
@@ -46,14 +47,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //creamos la carpeta que utiliza la aplicación
         new File("/storage/emulated/0/informacionTss").mkdir();
 
+        Bundle extras = getIntent().getExtras();
+        dato = extras.getString("usuario");
+        pass= extras.getString("pass");
+
+        Toast.makeText(getApplicationContext(), "Bienvenido de nuevo "+dato, Toast.LENGTH_LONG).show();
+
         //declaracion de un botón y de dos TextView
         bt1 = findViewById(R.id.btnEntrada);
         lblMensaje = findViewById(R.id.informacion);
         delegacion = findViewById(R.id.delegacion);
 
         //damos valor a las variables x e y con la latitud, longitud
-        x = 43.3058391;
-        y = -2.0136476;
+        x = 43.30471933852907;
+        y = -2.016875475802671;
 
         //enviamos la información por la extención .setText()
         delegacion.setText("Guipúzcoa");
@@ -63,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         intentLlamada = new Intent(Intent.ACTION_APPLICATION_RESTRICTIONS_CHANGED);
 
         //comprovamos si la aplicacion tiene permisos aplicado y si no pedirlo al usuario
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
             startActivity(intentLlamada);
         } else {
             emplicarUsoPermiso();
@@ -76,11 +83,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 Intent myInten = new Intent(MainActivity.this, CuatroOpcionesActivity.class);
                 myInten.putExtra("nombre", "Guipúzcoa");
+                myInten.putExtra("usuario", dato);
+                myInten.putExtra("pass",pass);
                 startActivityForResult(myInten, 1234);
             }
         });
 
-        /*//obligamos a que el google maps este actualizado
+      /* //obligamos a que el google maps este actualizado
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if (status == ConnectionResult.SUCCESS) {
 
@@ -92,8 +101,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Dialog dialog = GooglePlayServicesUtil.getErrorDialog(status, (Activity) getApplicationContext(), 10);
             dialog.show();
         }
-        //*/
 
+*/
     }
 
     //metodo para cargar o generar el GoogleMaps de la aplicación
